@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         VK Umbra
 // @namespace    https://github.com/Kowalski-coder/VK-Umbra
-// @version      3.0.0
+// @version      3.0.1
 // @description  VK Umbra — стильный клиент ВКонтакте в фирменном дизайне Red&Gray: принудительная тёмная тема, кэширование интерфейса (Stale-While-Revalidate), поддержка PWA/веб-приложения с логотипом VK Umbra, кастомизация нижней панели, антиреклама, нечиталка, неписалка и шпионские функции.
 // @author       Kowalski-coder
 // @match        *://m.vk.ru/*
@@ -979,15 +979,8 @@
             color: #ff5c5c !important;
         }
 
-        /* 1. ИСПРАВЛЕНИЕ СЧЕТЧИКОВ СООБЩЕНИЙ/УВЕДОМЛЕНИЙ -> ИДЕАЛЬНЫЙ КРУГ */
-        [class*="Counter"],
-        .vkuiCounter,
-        .im_peer_counter,
-        [class*="Badge"]:not([class*="Avatar"]):not([class*="ImageBase"]),
-        .vkuiBadge:not([class*="Avatar"]):not([class*="ImageBase"]),
-        .vkuiTabbarItem__indicator,
-        .vkuiTabbarItem__badge,
-        .vmu-restored-badge {
+        /* 1. ИСПРАВЛЕНИЕ СЧЕТЧИКОВ СООБЩЕНИЙ/УВЕДОМЛЕНИЙ -> ИДЕАЛЬНЫЙ КРУГ (ИСКЛЮЧАЯ РЕАКЦИИ И TYPING) */
+        :is([class*="Counter"], .vkuiCounter, .im_peer_counter, [class*="Badge"]:not([class*="Avatar"]):not([class*="ImageBase"]), .vkuiBadge:not([class*="Avatar"]):not([class*="ImageBase"]), .vkuiTabbarItem__indicator, .vkuiTabbarItem__badge, .vmu-restored-badge):not(:is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i], [class*="Typing" i], [class*="typing" i], [data-testid*="typing" i], [class*="TypingDots" i], [class*="typing-dots" i], [class*="im-page--typing" i], [class*="writeBar__typing" i]) *):not([class*="Typing" i]):not([class*="typing" i]) {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -1001,10 +994,7 @@
             flex-shrink: 0 !important;
         }
 
-        [class*="Counter__in"],
-        [class*="Counter__children"],
-        .vkuiCounter__in,
-        .vkuiCounter__children {
+        :is([class*="Counter__in"], [class*="Counter__children"], .vkuiCounter__in, .vkuiCounter__children):not(:is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i], [class*="Typing" i], [class*="typing" i]) *) {
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -1055,9 +1045,9 @@
             opacity: 1 !important;
         }
 
-        /* 1.2. СЧЁТЧИКИ В СПИСКЕ ДИАЛОГОВ (ВКЛАДКА МЕССЕНДЖЕР) */
+        /* 1.2. СЧЁТЧИКИ В СПИСКЕ ДИАЛОГОВ (ВКЛАДКА МЕССЕНДЖЕР) -> СТРОГО В ПРАВОЙ ЧАСТИ ДИАЛОГА */
         /* Базово: красный кружок */
-        body.vmu-page-mail :is(.vkuiSimpleCell, [class*="ConvoList"], [class*="ConversationItem"], [class*="im-dialog"]) :is([class*="Counter"], .vkuiCounter, .im_peer_counter) {
+        body.vmu-page-mail :is(.vkuiSimpleCell, [class*="ConvoList"], [class*="ConversationItem"], [class*="im-dialog"]) :is([class*="SimpleCell__after"], [class*="Cell__after"], [class*="actions"]) :is([class*="Counter"], .vkuiCounter, .im_peer_counter):not(:is([class*="Typing" i], [class*="typing" i]) *) {
             background-color: #ff3347 !important;
             background: #ff3347 !important;
             border-radius: 10px !important;
@@ -1069,16 +1059,16 @@
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            color: var(--vkui--color_background, #19191a) !important;
+            color: #000000 !important;
         }
 
-        body.vmu-page-mail :is(.vkuiSimpleCell, [class*="ConvoList"], [class*="ConversationItem"], [class*="im-dialog"]) :is([class*="Counter"], .vkuiCounter, .im_peer_counter) * {
-            color: var(--vkui--color_background, #19191a) !important;
-            fill: var(--vkui--color_background, #19191a) !important;
+        body.vmu-page-mail :is(.vkuiSimpleCell, [class*="ConvoList"], [class*="ConversationItem"], [class*="im-dialog"]) :is([class*="SimpleCell__after"], [class*="Cell__after"], [class*="actions"]) :is([class*="Counter"], .vkuiCounter, .im_peer_counter):not(:is([class*="Typing" i], [class*="typing" i]) *) * {
+            color: #000000 !important;
+            fill: #000000 !important;
         }
 
         /* Чаты с отключенными уведомлениями: серый кружок */
-        body.vmu-page-mail :is(.vkuiSimpleCell, [class*="ConvoList"], [class*="ConversationItem"], [class*="im-dialog"]) :is(
+        body.vmu-page-mail :is(.vkuiSimpleCell, [class*="ConvoList"], [class*="ConversationItem"], [class*="im-dialog"]) :is([class*="SimpleCell__after"], [class*="Cell__after"], [class*="actions"]):is(
             [class*="Counter--mode-secondary"],
             .vkuiCounter--mode-secondary,
             [class*="Counter--mode-inherit"],
@@ -1091,15 +1081,67 @@
             :has([class*="mute"]),
             :has(use[*|href*="volume" i]),
             :has(use[*|href*="mute" i])
-        ) :is([class*="Counter"], .vkuiCounter, .im_peer_counter) {
+        ) :is([class*="Counter"], .vkuiCounter, .im_peer_counter):not(:is([class*="Typing" i], [class*="typing" i]) *) {
             background-color: #76787a !important;
             background: #76787a !important;
         }
 
-        /* Число внутри счётчика чата принимает цвет фона Red&Gray */
-        body.vmu-page-mail :is(.vkuiSimpleCell, [class*="ConvoList"], [class*="ConversationItem"], [class*="im-dialog"]) :is([class*="Counter"], .vkuiCounter, .im_peer_counter) * {
-            color: #000000 !important;
-            fill: #000000 !important;
+        /* 1.2.1. ПОЛНОЕ ИСКЛЮЧЕНИЕ ИНДИКАТОРОВ НАБОРА ТЕКСТА (TYPING) ИЗ ВМЕШАТЕЛЬСТВА СКРИПТА */
+        :is([class*="Typing" i], [class*="typing" i], [data-testid*="typing" i], [class*="TypingDots" i], [class*="typing-dots" i], [class*="im-page--typing" i], [class*="writeBar__typing" i], [class*="im-chat-input--typing" i]),
+        :is([class*="Typing" i], [class*="typing" i], [data-testid*="typing" i], [class*="TypingDots" i], [class*="typing-dots" i], [class*="im-page--typing" i], [class*="writeBar__typing" i], [class*="im-chat-input--typing" i]) :is([class*="Counter"], .vkuiCounter, [class*="Badge"], .vkuiBadge, [class*="indicator" i], [class*="icon" i], div, span) {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            outline: none !important;
+            min-width: auto !important;
+            min-height: auto !important;
+            width: auto !important;
+            height: auto !important;
+            line-height: inherit !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        /* 1.2.2. ПОЛНОЕ ИСКЛЮЧЕНИЕ СЧЁТЧИКОВ РЕАКЦИЙ (ВОЗВРАТ К ОРИГИНАЛЬНОМУ ВИДУ VK БЕЗ КРАСНЫХ КРУЖКОВ) */
+        :is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i]) :is([class*="Counter" i], .vkuiCounter, [class*="count" i], [class*="Badge" i], [class*="indicator" i]) {
+            background-color: transparent !important;
+            background: transparent !important;
+            border-radius: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            min-width: auto !important;
+            min-height: auto !important;
+            width: auto !important;
+            height: auto !important;
+            line-height: inherit !important;
+            padding: 0 0 0 3px !important;
+            font-weight: 500 !important;
+            color: var(--vkui--color_text_subhead, var(--vkui--color_text_secondary, #939393)) !important;
+        }
+
+        :is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i]) :is([class*="Counter" i], .vkuiCounter, [class*="count" i], [class*="Badge" i], [class*="indicator" i]) :is(*, span, div) {
+            background-color: transparent !important;
+            background: transparent !important;
+            color: inherit !important;
+        }
+
+        /* 1.2.3. СОБСТВЕННЫЕ РЕАКЦИИ ПОЛЬЗОВАТЕЛЯ: УБИРАЕМ КРАСНУЮ ОВАЛЬНУЮ РАМКУ ВОКРУГ АВАТАРКИ */
+        :is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i]) :is([class*="Avatar" i], .vkuiAvatar, [class*="ImageBase" i], .vkuiImageBase, [class*="avatar" i]) {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            --vkui--color_stroke_accent: transparent !important;
+            --color_stroke_accent: transparent !important;
+            --vkui--color_stroke_accent_themed: transparent !important;
+        }
+
+        :is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i]) :is([class*="Avatar" i], .vkuiAvatar, [class*="ImageBase" i], .vkuiImageBase, [class*="avatar" i]) :is(*, *::before, *::after) {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
 
         /* 1.3. ЗНАЧОК ДОБАВЛЕНИЯ ИСТОРИИ НА АВАТАРКЕ (ИДЕАЛЬНЫЙ КРУГ ЦВЕТА ТЕМЫ И БЕЛЫЙ ПЛЮС) СТРОГО В БЛОКЕ ИСТОРИЙ */
@@ -1943,11 +1985,11 @@
             color: #ffffff !important;
         }
 
-        [class*="Counter--mode-primary"] {
+        [class*="Counter--mode-primary"]:not(:is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="Typing" i], [class*="typing" i]) *):not([class*="Typing" i]):not([class*="typing" i]) {
             background-color: ${COLOR_ACCENT_SWAPPED} !important;
         }
 
-        [class*="Counter--mode-prominent"] {
+        [class*="Counter--mode-prominent"]:not(:is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="Typing" i], [class*="typing" i]) *):not([class*="Typing" i]):not([class*="typing" i]) {
             background-color: ${COLOR_NEGATIVE_SWAPPED} !important;
         }
 
@@ -3953,7 +3995,7 @@
 
         diagBox.innerHTML = `
             <div style="color: #71aaeb; font-weight: bold; margin-bottom: 8px;">🐞 СИСТЕМНАЯ ДИАГНОСТИКА:</div>
-            <div>• <b>Script Version:</b> v2.31.3</div>
+            <div>• <b>Script Version:</b> v3.0.1</div>
             <div>• <b>Theme Mode:</b> ${currentThemeMode} (color swap: ${isColorSwapEnabled})</div>
             <div>• <b>Custom Tab Slot:</b> ${tabInfo}</div>
             <div>• <b>UI Cache:</b> ${isUiCacheEnabled}</div>
