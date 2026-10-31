@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         VK Umbra
 // @namespace    https://github.com/Kowalski-coder/VK-Umbra
-// @version      3.0.1
+// @version      3.0.2
 // @description  VK Umbra — стильный клиент ВКонтакте в фирменном дизайне Red&Gray: принудительная тёмная тема, кэширование интерфейса (Stale-While-Revalidate), поддержка PWA/веб-приложения с логотипом VK Umbra, кастомизация нижней панели, антиреклама, нечиталка, неписалка и шпионские функции.
 // @author       Kowalski-coder
 // @match        *://m.vk.ru/*
@@ -979,8 +979,8 @@
             color: #ff5c5c !important;
         }
 
-        /* 1. ИСПРАВЛЕНИЕ СЧЕТЧИКОВ СООБЩЕНИЙ/УВЕДОМЛЕНИЙ -> ИДЕАЛЬНЫЙ КРУГ (ИСКЛЮЧАЯ РЕАКЦИИ И TYPING) */
-        :is([class*="Counter"], .vkuiCounter, .im_peer_counter, [class*="Badge"]:not([class*="Avatar"]):not([class*="ImageBase"]), .vkuiBadge:not([class*="Avatar"]):not([class*="ImageBase"]), .vkuiTabbarItem__indicator, .vkuiTabbarItem__badge, .vmu-restored-badge):not(:is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i], [class*="Typing" i], [class*="typing" i], [data-testid*="typing" i], [class*="TypingDots" i], [class*="typing-dots" i], [class*="im-page--typing" i], [class*="writeBar__typing" i]) *):not([class*="Typing" i]):not([class*="typing" i]) {
+        /* 1. ИСПРАВЛЕНИЕ СЧЕТЧИКОВ СООБЩЕНИЙ/УВЕДОМЛЕНИЙ -> ИДЕАЛЬНЫЙ КРУГ (ИСКЛЮЧАЯ АВАТАРКИ, ОНЛАЙН, РЕАКЦИИ И TYPING) */
+        :is([class*="Counter"], .vkuiCounter, .im_peer_counter, .vkuiTabbarItem__indicator, .vkuiTabbarItem__badge, .vmu-restored-badge):not(:is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i], [class*="Typing" i], [class*="typing" i], [data-testid*="typing" i], [class*="TypingDots" i], [class*="typing-dots" i], [class*="im-page--typing" i], [class*="writeBar__typing" i]) *):not([class*="Typing" i]):not([class*="typing" i]) {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -994,7 +994,7 @@
             flex-shrink: 0 !important;
         }
 
-        :is([class*="Counter__in"], [class*="Counter__children"], .vkuiCounter__in, .vkuiCounter__children):not(:is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i], [class*="Typing" i], [class*="typing" i]) *) {
+        :is([class*="Counter__in"], [class*="Counter__children"], .vkuiCounter__in, .vkuiCounter__children):not(:is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i], [class*="Typing" i], [class*="typing" i]) *) {
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -1104,7 +1104,7 @@
             margin: 0 !important;
         }
 
-        /* 1.2.2. ПОЛНОЕ ИСКЛЮЧЕНИЕ СЧЁТЧИКОВ РЕАКЦИЙ (ВОЗВРАТ К ОРИГИНАЛЬНОМУ ВИДУ VK БЕЗ КРАСНЫХ КРУЖКОВ) */
+        /* 1.2.2. ПОЛНОЕ ИСКЛЮЧЕНИЕ СЧЁТЧИКОВ РЕАКЦИЙ (ОРИГИНАЛЬНЫЙ ВИД VK + БЕЛЫЙ ЦВЕТ ЦИФР) */
         :is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i]) :is([class*="Counter" i], .vkuiCounter, [class*="count" i], [class*="Badge" i], [class*="indicator" i]) {
             background-color: transparent !important;
             background: transparent !important;
@@ -1119,13 +1119,13 @@
             line-height: inherit !important;
             padding: 0 0 0 3px !important;
             font-weight: 500 !important;
-            color: var(--vkui--color_text_subhead, var(--vkui--color_text_secondary, #939393)) !important;
+            color: #ffffff !important;
         }
 
         :is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i]) :is([class*="Counter" i], .vkuiCounter, [class*="count" i], [class*="Badge" i], [class*="indicator" i]) :is(*, span, div) {
             background-color: transparent !important;
             background: transparent !important;
-            color: inherit !important;
+            color: #ffffff !important;
         }
 
         /* 1.2.3. СОБСТВЕННЫЕ РЕАКЦИИ ПОЛЬЗОВАТЕЛЯ: УБИРАЕМ КРАСНУЮ ОВАЛЬНУЮ РАМКУ ВОКРУГ АВАТАРКИ */
@@ -1144,8 +1144,42 @@
             box-shadow: none !important;
         }
 
-        /* 1.3. ЗНАЧОК ДОБАВЛЕНИЯ ИСТОРИИ НА АВАТАРКЕ (ИДЕАЛЬНЫЙ КРУГ ЦВЕТА ТЕМЫ И БЕЛЫЙ ПЛЮС) СТРОГО В БЛОКЕ ИСТОРИЙ */
-        :is([class*="Stories" i], [class*="stories" i], .stories_feed_wrap, [data-feed-block*="stories" i]) :is([class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i], .vkuiAvatar__badge, .vkuiImageBase__badge) {
+        /* 1.2.4. ОРИГИНАЛЬНЫЙ ВИД ИНДИКАТОРОВ ОНЛАЙНА НА АВАТАРКАХ (ЗЕЛЁНЫЙ КРУЖОК / ТЕЛЕФОН БЕЗ ВМЕШАТЕЛЬСТВА СКРИПТА) */
+        :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase) :is([class*="Badge" i], .vkuiBadge, [class*="badge" i], [class*="online" i], [class*="Online" i], [class*="indicator" i]) {
+            border-color: var(--vkui--color_background, #000000) !important;
+            --vkui--color_stroke_accent: var(--vkui--color_background, #000000) !important;
+            --color_stroke_accent: var(--vkui--color_background, #000000) !important;
+            --vkui--color_stroke_accent_themed: var(--vkui--color_background, #000000) !important;
+        }
+
+        :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase) :is([class*="OnlineBadge" i], [class*="online" i], [class*="Online" i], svg[class*="online" i], [class*="Badge--mode-online" i], [class*="Badge--mode-positive" i]) {
+            color: #4bb34b !important;
+            fill: #4bb34b !important;
+        }
+
+        :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase) :is([class*="OnlineBadge" i], [class*="online" i], [class*="Online" i], svg[class*="online" i], [class*="Badge--mode-online" i], [class*="Badge--mode-positive" i]) * {
+            color: #4bb34b !important;
+            fill: #4bb34b !important;
+        }
+
+        /* 1.2.5. ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ: УБИРАЕМ КРАСНУЮ ПОЛОСУ И ВОЗВРАЩАЕМ ОРИГИНАЛЬНЫЙ ВИД БЕЙДЖА ОНЛАЙНА/СТАТУСА НАД АВАТАРКОЙ */
+        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="CoverBanner" i]) :is([class*="Avatar" i], [class*="ImageBase" i]) :is([class*="badge" i], [class*="Badge" i], [class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i]) {
+            background-color: transparent !important;
+            background: transparent !important;
+            border: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            outline: none !important;
+            color: inherit !important;
+        }
+
+        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="CoverBanner" i]) :is([class*="Avatar" i], [class*="ImageBase" i]) :is([class*="badge" i], [class*="Badge" i], [class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i]) * {
+            background-color: transparent !important;
+            background: transparent !important;
+        }
+
+        /* 1.3. ЗНАЧОК ДОБАВЛЕНИЯ ИСТОРИИ НА АВАТАРКЕ СТРОГО В КАРУСЕЛИ ИСТОРИЙ В ЛЕНТЕ */
+        body.vmu-page-feed .stories_feed_wrap :is([class*="StoriesList" i], [class*="storiesList" i]) > *:first-child :is([class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i], .vkuiAvatar__badge, .vkuiImageBase__badge) {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -1157,34 +1191,28 @@
             min-height: 22px !important;
             border-radius: 50% !important;
             box-sizing: border-box !important;
-            background-color: var(--vkui--color_background_accent, #2688eb) !important;
-            background: var(--vkui--color_background_accent, #2688eb) !important;
-            border: 2px solid var(--vkui--color_background, #19191a) !important;
+            background-color: #ff5c5c !important;
+            background: #ff5c5c !important;
+            border: 2px solid #000000 !important;
             box-shadow: none !important;
             overflow: hidden !important;
         }
 
-        :is([class*="Stories" i], [class*="stories" i], .stories_feed_wrap, [data-feed-block*="stories" i]) :is([class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i], .vkuiAvatar__badge, .vkuiImageBase__badge) svg {
+        body.vmu-page-feed .stories_feed_wrap :is([class*="StoriesList" i], [class*="storiesList" i]) > *:first-child :is([class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i], .vkuiAvatar__badge, .vkuiImageBase__badge) svg {
             display: block !important;
             width: 14px !important;
             height: 14px !important;
             background: transparent !important;
         }
 
-        :is([class*="Stories" i], [class*="stories" i], .stories_feed_wrap, [data-feed-block*="stories" i]) :is([class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i], .vkuiAvatar__badge, .vkuiImageBase__badge) :is(path, line, polyline) {
+        body.vmu-page-feed .stories_feed_wrap :is([class*="StoriesList" i], [class*="storiesList" i]) > *:first-child :is([class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i], .vkuiAvatar__badge, .vkuiImageBase__badge) :is(path, line, polyline) {
             fill: #ffffff !important;
             stroke: #ffffff !important;
         }
 
-        :is([class*="Stories" i], [class*="stories" i], .stories_feed_wrap, [data-feed-block*="stories" i]) :is([class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i], .vkuiAvatar__badge, .vkuiImageBase__badge) * {
+        body.vmu-page-feed .stories_feed_wrap :is([class*="StoriesList" i], [class*="storiesList" i]) > *:first-child :is([class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i], .vkuiAvatar__badge, .vkuiImageBase__badge) * {
             background: transparent !important;
             background-color: transparent !important;
-        }
-
-        :is([class*="Stories" i], [class*="stories" i], .stories_feed_wrap, [data-feed-block*="stories" i]) :is([class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i]) {
-            background-color: #ff5c5c !important;
-            background: #ff5c5c !important;
-            border-color: #000000 !important;
         }
 
         /* 1.4. АККУРАТНЫЙ КОМПАКТНЫЙ МАСШТАБ ИСТОРИЙ НА ГЛАВНОЙ ВКЛАДКЕ */
@@ -3995,7 +4023,7 @@
 
         diagBox.innerHTML = `
             <div style="color: #71aaeb; font-weight: bold; margin-bottom: 8px;">🐞 СИСТЕМНАЯ ДИАГНОСТИКА:</div>
-            <div>• <b>Script Version:</b> v3.0.1</div>
+            <div>• <b>Script Version:</b> v3.0.2</div>
             <div>• <b>Theme Mode:</b> ${currentThemeMode} (color swap: ${isColorSwapEnabled})</div>
             <div>• <b>Custom Tab Slot:</b> ${tabInfo}</div>
             <div>• <b>UI Cache:</b> ${isUiCacheEnabled}</div>
@@ -5081,13 +5109,13 @@
         }
     }
 
-    // 3. Значок плюсика на аватарке историй (круг цвета темы с белым плюсиком) СТРОГО в блоке историй
+    // 3. Значок плюсика на аватарке историй СТРОГО на кнопке добавления истории в ленте новостей
     function fixStoriesAvatarBadge() {
-        // Очищаем случайно измененные бейджи вне блока историй (например, индикаторы набора текста в чатах)
+        // Очищаем случайно измененные бейджи вне карусели историй ленты (например, в профилях пользователей, друзьях и чатах)
         const strayPlus = document.querySelectorAll('svg[data-vmu-plus="1"]');
         for (let i = 0; i < strayPlus.length; i++) {
             const svg = strayPlus[i];
-            if (!svg.closest(':is([class*="Stories" i], [class*="stories" i], .stories_feed_wrap, [data-feed-block*="stories" i])')) {
+            if (!svg.closest('.stories_feed_wrap, .vmu-stories-container, [data-vmu-stories="1"]')) {
                 const parent = svg.parentElement;
                 svg.remove();
                 if (parent) {
@@ -5102,32 +5130,37 @@
             }
         }
 
-        const storiesContainer = document.querySelector(':is([class*="Stories" i], [class*="stories" i], .stories_feed_wrap, [data-feed-block*="stories" i])');
+        // Вне ленты новостей функция не должна выполняться
+        const path = window.location.pathname.toLowerCase();
+        const isFeedPage = (path.startsWith('/feed') || path === '/' || path === '' || document.body.classList.contains('vmu-page-feed'));
+        if (!isFeedPage || path.startsWith('/id') || path.startsWith('/friends') || path.startsWith('/im') || path.startsWith('/mail')) {
+            return;
+        }
+
+        const storiesContainer = document.querySelector('.stories_feed_wrap, .vmu-stories-container, [data-feed-block*="stories" i]');
         if (!storiesContainer) return;
 
-        const badges = storiesContainer.querySelectorAll(
-            ':is([class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i], .vkuiAvatar__badge, .vkuiImageBase__badge)'
+        // Находим только первый элемент карусели историй (кнопка добавления истории пользователя)
+        const firstBadge = storiesContainer.querySelector(
+            ':is([class*="StoriesList" i], [class*="storiesList" i]) > *:first-child :is([class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i], .vkuiAvatar__badge, .vkuiImageBase__badge)'
         );
-        if (!badges || badges.length === 0) return;
+        if (!firstBadge) return;
 
         let accentColor = '#ff5c5c';
         let borderColor = '#000000';
 
-        for (let i = 0; i < badges.length; i++) {
-            const b = badges[i];
-            b.style.setProperty('background-color', accentColor, 'important');
-            b.style.setProperty('background', accentColor, 'important');
-            b.style.setProperty('border-color', borderColor, 'important');
-            b.style.setProperty('border', `2px solid ${borderColor}`, 'important');
-            b.style.setProperty('border-radius', '50%', 'important');
-            b.style.setProperty('display', 'inline-flex', 'important');
-            b.style.setProperty('align-items', 'center', 'important');
-            b.style.setProperty('justify-content', 'center', 'important');
-            b.style.setProperty('overflow', 'hidden', 'important');
+        firstBadge.style.setProperty('background-color', accentColor, 'important');
+        firstBadge.style.setProperty('background', accentColor, 'important');
+        firstBadge.style.setProperty('border-color', borderColor, 'important');
+        firstBadge.style.setProperty('border', `2px solid ${borderColor}`, 'important');
+        firstBadge.style.setProperty('border-radius', '50%', 'important');
+        firstBadge.style.setProperty('display', 'inline-flex', 'important');
+        firstBadge.style.setProperty('align-items', 'center', 'important');
+        firstBadge.style.setProperty('justify-content', 'center', 'important');
+        firstBadge.style.setProperty('overflow', 'hidden', 'important');
 
-            if (!b.querySelector('svg[data-vmu-plus="1"]')) {
-                b.innerHTML = `<svg data-vmu-plus="1" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" style="display:block!important;margin:auto!important;pointer-events:none!important;"><path d="M6 2v8M2 6h8" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/></svg>`;
-            }
+        if (!firstBadge.querySelector('svg[data-vmu-plus="1"]')) {
+            firstBadge.innerHTML = `<svg data-vmu-plus="1" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none" style="display:block!important;margin:auto!important;pointer-events:none!important;"><path d="M6 2v8M2 6h8" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round"/></svg>`;
         }
     }
 
