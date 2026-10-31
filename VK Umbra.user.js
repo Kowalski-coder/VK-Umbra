@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         VK Umbra
 // @namespace    https://github.com/Kowalski-coder/VK-Umbra
-// @version      3.0.4
+// @version      3.0.5
 // @description  VK Umbra — стильный клиент ВКонтакте в фирменном дизайне Red&Gray: принудительная тёмная тема, кэширование интерфейса (Stale-While-Revalidate), поддержка PWA/веб-приложения с логотипом VK Umbra, кастомизация нижней панели, антиреклама, нечиталка, неписалка и шпионские функции.
 // @author       Kowalski-coder
 // @match        *://m.vk.ru/*
@@ -1201,12 +1201,86 @@
             fill: #4bb34b !important;
         }
 
-        /* 1.2.5. ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ: СТРОГО ОРИГИНАЛЬНЫЙ ВИД АВАТАРКИ И ИНДИКАТОРА ПОСЛЕДНЕГО ВИЗИТА БЕЗ ВМЕШАТЕЛЬСТВА СКРИПТА */
-        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="OwnerHeader" i], [class*="CoverBanner" i], .pp_cont) :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="avatar" i]) {
+        /* 1.2.5. ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ: СТРОГО ОРИГИНАЛЬНЫЙ ВИД АВАТАРКИ И ИНДИКАТОРА ПОСЛЕДНЕГО ВИЗИТА */
+        /* Убираем серый квадрат с контейнера аватарки, сохраняя круг */
+        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="OwnerHeader" i], [class*="CoverBanner" i], .pp_cont) :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="avatar" i]):not([class*="badge" i]):not([class*="Badge" i]) {
             background: transparent !important;
             background-color: transparent !important;
             box-shadow: none !important;
             border-radius: 50% !important;
+        }
+
+        /* Оригинальный вид плашки последнего времени онлайна ("1 ч", "2 ч", "5 мин") на аватарке профиля */
+        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="OwnerHeader" i], [class*="CoverBanner" i], .pp_cont) :is(
+            [class*="Avatar__badge" i],
+            [class*="ImageBase__badge" i],
+            [class*="AvatarBadge" i],
+            [class*="ImageBaseBadge" i]
+        ) {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background-color: #ebedf0 !important;
+            background: #ebedf0 !important;
+            color: #000000 !important;
+            border-radius: 12px !important;
+            padding: 2px 7px !important;
+            box-sizing: border-box !important;
+            min-height: 20px !important;
+            line-height: 1 !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            border: 2px solid var(--vkui--color_background_content, #19191a) !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="OwnerHeader" i], [class*="CoverBanner" i], .pp_cont) :is(
+            [class*="Avatar__badge" i],
+            [class*="ImageBase__badge" i],
+            [class*="AvatarBadge" i],
+            [class*="ImageBaseBadge" i]
+        ) :is(*, span, div) {
+            color: #000000 !important;
+            fill: #000000 !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            background: transparent !important;
+            background-color: transparent !important;
+        }
+
+        /* Если бейдж содержит только SVG иконку (онлайн в реальном времени с кружком/телефоном) */
+        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="OwnerHeader" i], [class*="CoverBanner" i], .pp_cont) :is(
+            [class*="Avatar__badge" i],
+            [class*="ImageBase__badge" i],
+            [class*="AvatarBadge" i],
+            [class*="ImageBaseBadge" i]
+        ):has(svg:only-child) {
+            background-color: transparent !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+
+        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="OwnerHeader" i], [class*="CoverBanner" i], .pp_cont) :is(
+            [class*="Avatar__badge" i],
+            [class*="ImageBase__badge" i],
+            [class*="AvatarBadge" i],
+            [class*="ImageBaseBadge" i]
+        ) svg:only-child :is(path, circle, rect) {
+            color: #4bb34b !important;
+            fill: #4bb34b !important;
+        }
+
+        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="OwnerHeader" i], [class*="CoverBanner" i], .pp_cont) :is(
+            [class*="Avatar__badge" i],
+            [class*="ImageBase__badge" i],
+            [class*="AvatarBadge" i],
+            [class*="ImageBaseBadge" i]
+        ):empty {
+            display: none !important;
         }
 
         .vmu-reg-date-info {
@@ -4061,7 +4135,7 @@
 
         diagBox.innerHTML = `
             <div style="color: #71aaeb; font-weight: bold; margin-bottom: 8px;">🐞 СИСТЕМНАЯ ДИАГНОСТИКА:</div>
-            <div>• <b>Script Version:</b> v3.0.4</div>
+            <div>• <b>Script Version:</b> v3.0.5</div>
             <div>• <b>Theme Mode:</b> ${currentThemeMode} (color swap: ${isColorSwapEnabled})</div>
             <div>• <b>Custom Tab Slot:</b> ${tabInfo}</div>
             <div>• <b>UI Cache:</b> ${isUiCacheEnabled}</div>
