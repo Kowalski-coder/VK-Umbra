@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         VK Umbra
 // @namespace    https://github.com/Kowalski-coder/VK-Umbra
-// @version      3.0.3
+// @version      3.0.4
 // @description  VK Umbra — стильный клиент ВКонтакте в фирменном дизайне Red&Gray: принудительная тёмная тема, кэширование интерфейса (Stale-While-Revalidate), поддержка PWA/веб-приложения с логотипом VK Umbra, кастомизация нижней панели, антиреклама, нечиталка, неписалка и шпионские функции.
 // @author       Kowalski-coder
 // @match        *://m.vk.ru/*
@@ -979,8 +979,8 @@
             color: #ff5c5c !important;
         }
 
-        /* 1. ИСПРАВЛЕНИЕ СЧЕТЧИКОВ СООБЩЕНИЙ/УВЕДОМЛЕНИЙ -> ИДЕАЛЬНЫЙ КРУГ (ИСКЛЮЧАЯ АВАТАРКИ, ОНЛАЙН, РЕАКЦИИ И TYPING) */
-        :is([class*="Counter"], .vkuiCounter, .im_peer_counter, .vkuiTabbarItem__indicator, .vkuiTabbarItem__badge, .vmu-restored-badge):not(:is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i], [class*="Typing" i], [class*="typing" i], [data-testid*="typing" i], [class*="TypingDots" i], [class*="typing-dots" i], [class*="im-page--typing" i], [class*="writeBar__typing" i]) *):not([class*="Typing" i]):not([class*="typing" i]) {
+        /* 1. ИСПРАВЛЕНИЕ СЧЕТЧИКОВ СООБЩЕНИЙ/УВЕДОМЛЕНИЙ -> ИДЕАЛЬНЫЙ КРУГ (ИСКЛЮЧАЯ АВАТАРКИ, ПРОФИЛЬ, ОНЛАЙН, РЕАКЦИИ И TYPING) */
+        :is([class*="Counter"], .vkuiCounter, .im_peer_counter, .vkuiTabbarItem__indicator, .vkuiTabbarItem__badge, .vmu-restored-badge):not(:is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], [class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i], [class*="Typing" i], [class*="typing" i], [data-testid*="typing" i], [class*="TypingDots" i], [class*="typing-dots" i], [class*="im-page--typing" i], [class*="writeBar__typing" i]) *):not([class*="Typing" i]):not([class*="typing" i]) {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -994,7 +994,7 @@
             flex-shrink: 0 !important;
         }
 
-        :is([class*="Counter__in"], [class*="Counter__children"], .vkuiCounter__in, .vkuiCounter__children):not(:is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i], [class*="Typing" i], [class*="typing" i]) *) {
+        :is([class*="Counter__in"], [class*="Counter__children"], .vkuiCounter__in, .vkuiCounter__children):not(:is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], [class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="im-mess--reaction" i], [class*="Typing" i], [class*="typing" i]) *) {
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
@@ -1144,8 +1144,8 @@
             box-shadow: none !important;
         }
 
-        /* 1.2.4. ОРИГИНАЛЬНЫЙ ВИД ИНДИКАТОРОВ ОНЛАЙНА НА АВАТАРКАХ (ЗЕЛЁНЫЙ КРУЖОК / ТЕЛЕФОН БЕЗ ВМЕШАТЕЛЬСТВА СКРИПТА) */
-        :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="Cell" i], .vkuiSimpleCell, .friends_user_row) :is(
+        /* 1.2.4. ОРИГИНАЛЬНЫЙ ВИД ИНДИКАТОРОВ ОНЛАЙНА НА АВАТАРКАХ В СПИСКАХ (ДРУЗЬЯ, ЧАТЫ: ЗЕЛЁНЫЙ КРУЖОК / ТЕЛЕФОН БЕЗ КРАСНОГО ФОНА) */
+        :is(.friends_user_row, .friends_list, .vkuiSimpleCell, [class*="SimpleCell"], [class*="Cell"]):not([class*="Profile"]):not([class*="Owner"]):not(:is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i]) *) :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase) :is(
             [class*="Badge" i],
             .vkuiBadge,
             [class*="badge" i],
@@ -1173,7 +1173,7 @@
             --vkui_internal--counter_background: transparent !important;
         }
 
-        :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="Cell" i], .vkuiSimpleCell, .friends_user_row) :is(
+        :is(.friends_user_row, .friends_list, .vkuiSimpleCell, [class*="SimpleCell"], [class*="Cell"]):not([class*="Profile"]):not([class*="Owner"]):not(:is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i]) *) :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase) :is(
             [class*="Badge" i],
             .vkuiBadge,
             [class*="badge" i],
@@ -1189,7 +1189,7 @@
             background-color: transparent !important;
         }
 
-        :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="Cell" i], .vkuiSimpleCell, .friends_user_row) :is(
+        :is(.friends_user_row, .friends_list, .vkuiSimpleCell, [class*="SimpleCell"], [class*="Cell"]):not([class*="Profile"]):not([class*="Owner"]):not(:is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i]) *) :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase) :is(
             [class*="OnlineBadge" i],
             [class*="online" i],
             [class*="Online" i],
@@ -1201,54 +1201,12 @@
             fill: #4bb34b !important;
         }
 
-        /* 1.2.5. ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ: УБИРАЕМ КРАСНУЮ ПОЛОСУ И ВОЗВРАЩАЕМ ОРИГИНАЛЬНЫЙ ВИД БЕЙДЖА ОНЛАЙНА/СТАТУСА НАД АВАТАРКОЙ */
-        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="OwnerHeader" i], [class*="CoverBanner" i], .pp_cont) :is(
-            [class*="online" i],
-            [class*="Online" i],
-            [class*="badge" i],
-            [class*="Badge" i],
-            [class*="Avatar__badge" i],
-            [class*="ImageBase__badge" i],
-            [class*="AvatarBadge" i],
-            [class*="ImageBaseBadge" i],
-            [class*="status" i],
-            [class*="Status" i],
-            .vkuiCounter,
-            [class*="Counter" i]
-        ) {
-            background-color: rgba(255, 255, 255, 0.12) !important;
-            background: rgba(255, 255, 255, 0.12) !important;
-            border: none !important;
+        /* 1.2.5. ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ: СТРОГО ОРИГИНАЛЬНЫЙ ВИД АВАТАРКИ И ИНДИКАТОРА ПОСЛЕДНЕГО ВИЗИТА БЕЗ ВМЕШАТЕЛЬСТВА СКРИПТА */
+        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="OwnerHeader" i], [class*="CoverBanner" i], .pp_cont) :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="avatar" i]) {
+            background: transparent !important;
+            background-color: transparent !important;
             box-shadow: none !important;
-            outline: none !important;
-            color: var(--vkui--color_text_subhead, #ffffff) !important;
-            --vkui--color_background_accent: transparent !important;
-            --color_background_accent: transparent !important;
-            --vkui--color_background_accent_themed: transparent !important;
-            --color_background_accent_themed: transparent !important;
-        }
-
-        /* Если контейнер статуса в профиле пустой (нет текста) - скрываем его полностью */
-        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="OwnerHeader" i], [class*="CoverBanner" i], .pp_cont) :is(
-            [class*="online" i],
-            [class*="Online" i],
-            [class*="badge" i],
-            [class*="Badge" i],
-            [class*="Avatar__badge" i],
-            [class*="ImageBase__badge" i],
-            [class*="AvatarBadge" i],
-            [class*="ImageBaseBadge" i],
-            [class*="status" i],
-            [class*="Status" i],
-            .vkuiCounter,
-            [class*="Counter" i]
-        ):empty {
-            display: none !important;
-            visibility: hidden !important;
-            height: 0 !important;
-            min-height: 0 !important;
-            padding: 0 !important;
-            margin: 0 !important;
+            border-radius: 50% !important;
         }
 
         .vmu-reg-date-info {
@@ -2093,11 +2051,11 @@
             color: #ffffff !important;
         }
 
-        [class*="Counter--mode-primary"]:not(:is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="Typing" i], [class*="typing" i]) *):not([class*="Typing" i]):not([class*="typing" i]) {
+        [class*="Counter--mode-primary"]:not(:is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], [class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="Typing" i], [class*="typing" i]) *):not([class*="Typing" i]):not([class*="typing" i]) {
             background-color: ${COLOR_ACCENT_SWAPPED} !important;
         }
 
-        [class*="Counter--mode-prominent"]:not(:is([class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="Typing" i], [class*="typing" i]) *):not([class*="Typing" i]):not([class*="typing" i]) {
+        [class*="Counter--mode-prominent"]:not(:is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], [class*="Reaction" i], [class*="reaction" i], [data-reaction], [class*="Reactions" i], [class*="reactions" i], [class*="Typing" i], [class*="typing" i]) *):not([class*="Typing" i]):not([class*="typing" i]) {
             background-color: ${COLOR_NEGATIVE_SWAPPED} !important;
         }
 
@@ -4103,7 +4061,7 @@
 
         diagBox.innerHTML = `
             <div style="color: #71aaeb; font-weight: bold; margin-bottom: 8px;">🐞 СИСТЕМНАЯ ДИАГНОСТИКА:</div>
-            <div>• <b>Script Version:</b> v3.0.3</div>
+            <div>• <b>Script Version:</b> v3.0.4</div>
             <div>• <b>Theme Mode:</b> ${currentThemeMode} (color swap: ${isColorSwapEnabled})</div>
             <div>• <b>Custom Tab Slot:</b> ${tabInfo}</div>
             <div>• <b>UI Cache:</b> ${isUiCacheEnabled}</div>
