@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         VK Umbra
 // @namespace    https://github.com/Kowalski-coder/VK-Umbra
-// @version      3.0.2
+// @version      3.0.3
 // @description  VK Umbra — стильный клиент ВКонтакте в фирменном дизайне Red&Gray: принудительная тёмная тема, кэширование интерфейса (Stale-While-Revalidate), поддержка PWA/веб-приложения с логотипом VK Umbra, кастомизация нижней панели, антиреклама, нечиталка, неписалка и шпионские функции.
 // @author       Kowalski-coder
 // @match        *://m.vk.ru/*
@@ -1007,7 +1007,7 @@
         }
 
         /* 1.1. СЧЁТЧИК НА НИЖНЕЙ ПАНЕЛИ: ВСЕГДА КРАСНЫЙ КРУЖОК С БЕЛЫМ ЧИСЛОМ (В ЛЮБОЙ ТЕМЕ И ПРИ ЛЮБОЙ АКТИВНОЙ ВКЛАДКЕ) */
-        :is(.vkuiTabbar, [class*="Tabbar" i], .bottom_nav, .vmu-tab-selected, .vkuiTabbarItem--selected, [class*="TabbarItem--selected" i]) :is(
+        :is(.vkuiTabbar, nav.bottom_nav, #bottom_nav, .layout__bottom, .vkuiFixedLayout--bottom) :is(.vkuiTabbarItem, [class*="TabbarItem"], .bottom_nav__item) :is(
             [class*="indicator" i],
             [class*="badge" i],
             [class*="counter" i],
@@ -1031,7 +1031,7 @@
             opacity: 1 !important;
         }
 
-        :is(.vkuiTabbar, [class*="Tabbar" i], .bottom_nav, .vmu-tab-selected, .vkuiTabbarItem--selected, [class*="TabbarItem--selected" i]) :is(
+        :is(.vkuiTabbar, nav.bottom_nav, #bottom_nav, .layout__bottom, .vkuiFixedLayout--bottom) :is(.vkuiTabbarItem, [class*="TabbarItem"], .bottom_nav__item) :is(
             [class*="indicator" i],
             [class*="badge" i],
             [class*="counter" i],
@@ -1145,37 +1145,117 @@
         }
 
         /* 1.2.4. ОРИГИНАЛЬНЫЙ ВИД ИНДИКАТОРОВ ОНЛАЙНА НА АВАТАРКАХ (ЗЕЛЁНЫЙ КРУЖОК / ТЕЛЕФОН БЕЗ ВМЕШАТЕЛЬСТВА СКРИПТА) */
-        :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase) :is([class*="Badge" i], .vkuiBadge, [class*="badge" i], [class*="online" i], [class*="Online" i], [class*="indicator" i]) {
-            border-color: var(--vkui--color_background, #000000) !important;
+        :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="Cell" i], .vkuiSimpleCell, .friends_user_row) :is(
+            [class*="Badge" i],
+            .vkuiBadge,
+            [class*="badge" i],
+            [class*="online" i],
+            [class*="Online" i],
+            [class*="indicator" i],
+            [class*="AvatarBadge" i],
+            [class*="ImageBaseBadge" i],
+            .vkuiAvatar__badge,
+            .vkuiImageBase__badge
+        ) {
+            background: transparent !important;
+            background-color: transparent !important;
+            box-shadow: none !important;
+            border: none !important;
+            outline: none !important;
+            --vkui--color_background_accent: transparent !important;
+            --color_background_accent: transparent !important;
+            --vkui--color_background_accent_themed: transparent !important;
+            --color_background_accent_themed: transparent !important;
             --vkui--color_stroke_accent: var(--vkui--color_background, #000000) !important;
             --color_stroke_accent: var(--vkui--color_background, #000000) !important;
             --vkui--color_stroke_accent_themed: var(--vkui--color_background, #000000) !important;
+            --vkui_internal--background: transparent !important;
+            --vkui_internal--counter_background: transparent !important;
         }
 
-        :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase) :is([class*="OnlineBadge" i], [class*="online" i], [class*="Online" i], svg[class*="online" i], [class*="Badge--mode-online" i], [class*="Badge--mode-positive" i]) {
-            color: #4bb34b !important;
-            fill: #4bb34b !important;
+        :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="Cell" i], .vkuiSimpleCell, .friends_user_row) :is(
+            [class*="Badge" i],
+            .vkuiBadge,
+            [class*="badge" i],
+            [class*="online" i],
+            [class*="Online" i],
+            [class*="indicator" i],
+            [class*="AvatarBadge" i],
+            [class*="ImageBaseBadge" i],
+            .vkuiAvatar__badge,
+            .vkuiImageBase__badge
+        ) :is(*, span, div) {
+            background: transparent !important;
+            background-color: transparent !important;
         }
 
-        :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase) :is([class*="OnlineBadge" i], [class*="online" i], [class*="Online" i], svg[class*="online" i], [class*="Badge--mode-online" i], [class*="Badge--mode-positive" i]) * {
+        :is([class*="Avatar" i], [class*="ImageBase" i], .vkuiAvatar, .vkuiImageBase, [class*="Cell" i], .vkuiSimpleCell, .friends_user_row) :is(
+            [class*="OnlineBadge" i],
+            [class*="online" i],
+            [class*="Online" i],
+            svg[class*="online" i],
+            [class*="Badge--mode-online" i],
+            [class*="Badge--mode-positive" i]
+        ) :is(*, svg, path, circle, rect, polygon) {
             color: #4bb34b !important;
             fill: #4bb34b !important;
         }
 
         /* 1.2.5. ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ: УБИРАЕМ КРАСНУЮ ПОЛОСУ И ВОЗВРАЩАЕМ ОРИГИНАЛЬНЫЙ ВИД БЕЙДЖА ОНЛАЙНА/СТАТУСА НАД АВАТАРКОЙ */
-        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="CoverBanner" i]) :is([class*="Avatar" i], [class*="ImageBase" i]) :is([class*="badge" i], [class*="Badge" i], [class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i]) {
-            background-color: transparent !important;
-            background: transparent !important;
+        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="OwnerHeader" i], [class*="CoverBanner" i], .pp_cont) :is(
+            [class*="online" i],
+            [class*="Online" i],
+            [class*="badge" i],
+            [class*="Badge" i],
+            [class*="Avatar__badge" i],
+            [class*="ImageBase__badge" i],
+            [class*="AvatarBadge" i],
+            [class*="ImageBaseBadge" i],
+            [class*="status" i],
+            [class*="Status" i],
+            .vkuiCounter,
+            [class*="Counter" i]
+        ) {
+            background-color: rgba(255, 255, 255, 0.12) !important;
+            background: rgba(255, 255, 255, 0.12) !important;
             border: none !important;
-            border-radius: 0 !important;
             box-shadow: none !important;
             outline: none !important;
-            color: inherit !important;
+            color: var(--vkui--color_text_subhead, #ffffff) !important;
+            --vkui--color_background_accent: transparent !important;
+            --color_background_accent: transparent !important;
+            --vkui--color_background_accent_themed: transparent !important;
+            --color_background_accent_themed: transparent !important;
         }
 
-        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="CoverBanner" i]) :is([class*="Avatar" i], [class*="ImageBase" i]) :is([class*="badge" i], [class*="Badge" i], [class*="Avatar__badge" i], [class*="ImageBase__badge" i], [class*="AvatarBadge" i], [class*="ImageBaseBadge" i]) * {
-            background-color: transparent !important;
+        /* Если контейнер статуса в профиле пустой (нет текста) - скрываем его полностью */
+        :is([class*="Profile" i], [class*="profile" i], [class*="Owner" i], [class*="owner" i], .profile_info, [class*="ProfileHeader" i], [class*="OwnerHeader" i], [class*="CoverBanner" i], .pp_cont) :is(
+            [class*="online" i],
+            [class*="Online" i],
+            [class*="badge" i],
+            [class*="Badge" i],
+            [class*="Avatar__badge" i],
+            [class*="ImageBase__badge" i],
+            [class*="AvatarBadge" i],
+            [class*="ImageBaseBadge" i],
+            [class*="status" i],
+            [class*="Status" i],
+            .vkuiCounter,
+            [class*="Counter" i]
+        ):empty {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            min-height: 0 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .vmu-reg-date-info {
             background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
         }
 
         /* 1.3. ЗНАЧОК ДОБАВЛЕНИЯ ИСТОРИИ НА АВАТАРКЕ СТРОГО В КАРУСЕЛИ ИСТОРИЙ В ЛЕНТЕ */
@@ -1838,10 +1918,10 @@
         if (!profileHeader) return;
 
         // Добавление даты регистрации
-        if (userId && !profileHeader.querySelector('.vmu-reg-date-badge')) {
+        if (userId && !profileHeader.querySelector('.vmu-reg-date-info')) {
             const badge = document.createElement('div');
-            badge.className = 'vmu-reg-date-badge';
-            badge.style.cssText = 'font-size: 12px; color: var(--vkui--color_text_secondary, #d8dee9); margin-top: 4px; display: inline-flex; align-items: center; gap: 4px;';
+            badge.className = 'vmu-reg-date-info';
+            badge.style.cssText = 'font-size: 12px; color: var(--vkui--color_text_secondary, #d8dee9) !important; background: transparent !important; background-color: transparent !important; border: none !important; box-shadow: none !important; margin-top: 4px; display: inline-flex; align-items: center; gap: 4px;';
             
             if (regDateCache[userId]) {
                 badge.innerHTML = `📅 Регистрация: <b>${regDateCache[userId]}</b>`;
@@ -4023,7 +4103,7 @@
 
         diagBox.innerHTML = `
             <div style="color: #71aaeb; font-weight: bold; margin-bottom: 8px;">🐞 СИСТЕМНАЯ ДИАГНОСТИКА:</div>
-            <div>• <b>Script Version:</b> v3.0.2</div>
+            <div>• <b>Script Version:</b> v3.0.3</div>
             <div>• <b>Theme Mode:</b> ${currentThemeMode} (color swap: ${isColorSwapEnabled})</div>
             <div>• <b>Custom Tab Slot:</b> ${tabInfo}</div>
             <div>• <b>UI Cache:</b> ${isUiCacheEnabled}</div>
@@ -4566,7 +4646,7 @@
     function getAllBottomNavItems() {
         // 1. Ищем внутри контейнеров навигации
         const containers = document.querySelectorAll(
-            '.vkuiTabbar, [class*="Tabbar"], #bottom_nav, .bottom_nav, .vkuiFixedLayout--bottom, [class*="FixedLayout--bottom"], .layout__bottom, nav'
+            '.vkuiTabbar, [class*="Tabbar"]:not([class*="AppRoot"]):not([class*="SplitLayout"]):not([class*="Epic"]):not([class*="layout"]), #bottom_nav, .bottom_nav, .vkuiFixedLayout--bottom, [class*="FixedLayout--bottom"], .layout__bottom'
         );
         for (let i = 0; i < containers.length; i++) {
             const c = containers[i];
